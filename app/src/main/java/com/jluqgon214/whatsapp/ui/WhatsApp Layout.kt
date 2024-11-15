@@ -230,7 +230,7 @@ fun MainScreen(modifier: Modifier) {
         Row(
             modifier = Modifier
                 .height(200.dp)
-                .weight(1.25f)
+                .weight(1f)
                 .fillMaxWidth()
                 .background(Color(0xFF00C853)),
         ) {
@@ -263,7 +263,8 @@ fun MainScreen(modifier: Modifier) {
 
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 IconButton(
                     onClick = {
@@ -289,7 +290,8 @@ fun MainScreen(modifier: Modifier) {
 
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 IconButton(
                     onClick = {
@@ -315,7 +317,8 @@ fun MainScreen(modifier: Modifier) {
 
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 IconButton(
                     onClick = {
