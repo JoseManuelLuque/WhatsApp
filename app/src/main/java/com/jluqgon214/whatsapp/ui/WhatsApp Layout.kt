@@ -3,9 +3,11 @@ package com.jluqgon214.whatsapp.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +18,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -102,29 +107,35 @@ fun MainScreen(modifier: Modifier) {
                 )
             }
         } else {
+            // Cabecera
             Row(
-                modifier = Modifier
-                    .height(56.dp)
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .background(Color(0xFF00C853)),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.weight(1f).background(Color(0xFF00C853))
             ) {
-                Text(
-                    text = stringResource(R.string.whatsapp),
-                    modifier = Modifier.padding(start = 16.dp),
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                //Título WhatsApp
+                Row(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(1.5f),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.whatsapp),
+                        modifier = Modifier.padding(start = 16.dp),
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                }
 
                 //Iconos TopBar
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 16.dp),
-                    horizontalArrangement = Arrangement.End,
+                        .fillMaxHeight()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     // Icono Camara
                     IconButton(
@@ -167,63 +178,86 @@ fun MainScreen(modifier: Modifier) {
                     }
                 }
             }
+
         }
 
-        //Contactos
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .weight(10f)
-        ) {
-            items(listaContactos) { contacto ->
-                // He hecho lo que es la row del contacto con un Button para que tenga esa animación que da feedback al pulsar ya que np o he conseguido hacer en un Row normal
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(120.dp)
-                        .align(Alignment.Start)
-                        .background(Color.White),
-                    onClick = {
-                        val index = listaContactos.indexOf(contacto)
-                        if (index > 0) {
-                            val contactoSeleccionado =
-                                listaContactos.removeAt(index) // Eliminar el contacto de su posición actual
-                            listaContactos.add(
-                                0,
-                                contactoSeleccionado
-                            ) // Agregar el contacto al inicio de la lista
-                        }
-                    },
-                    contentPadding = PaddingValues(start = 0.dp),
-                    colors = ButtonColors(
-                        containerColor = Color.White,
-                        contentColor = Color.Gray,
-                        disabledContainerColor = Color.LightGray,
-                        disabledContentColor = Color.LightGray
-                    ),
-                    shape = RectangleShape,
-                    content = {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(120.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Start
-                        ) {
-                            Image(
-                                painter = painterResource(id = contacto.fotoPerfil),
-                                contentDescription = null,
+        //Chats
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .weight(10f)) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+            ) {
+                items(listaContactos) { contacto ->
+                    // He hecho lo que es la row del contacto con un Button para que tenga esa animación que da feedback al pulsar ya que np o he conseguido hacer en un Row normal
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp)
+                            .background(Color.White),
+                        onClick = {
+                            val index = listaContactos.indexOf(contacto)
+                            if (index > 0) {
+                                val contactoSeleccionado =
+                                    listaContactos.removeAt(index) // Eliminar el contacto de su posición actual
+                                listaContactos.add(
+                                    0,
+                                    contactoSeleccionado
+                                ) // Agregar el contacto al inicio de la lista
+                            }
+                        },
+                        contentPadding = PaddingValues(start = 0.dp),
+                        colors = ButtonColors(
+                            containerColor = Color.White,
+                            contentColor = Color.Gray,
+                            disabledContainerColor = Color.LightGray,
+                            disabledContentColor = Color.LightGray
+                        ),
+                        shape = RectangleShape,
+                        content = {
+                            Row(
                                 modifier = Modifier
-                                    .size(100.dp)
-                                    .padding(end = 16.dp, start = 16.dp)
-                            )
-                            Text(text = contacto.nombre, color = Color.Black)
+                                    .fillMaxWidth()
+                                    .height(120.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                Image(
+                                    painter = painterResource(id = contacto.fotoPerfil),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(100.dp)
+                                        .padding(end = 16.dp, start = 16.dp)
+                                )
+                                Text(text = contacto.nombre, color = Color.Black)
+                            }
                         }
-                    }
 
-                )
+                    )
+                }
             }
+
+
+            FloatingActionButton(
+                content = {
+                    Icon(
+                        painter = painterResource(R.drawable.chats),
+                        contentDescription = null,
+                        modifier = Modifier.size(28.dp)
+                    )
+                },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomEnd),
+                onClick = {
+                    //TODO: Abrir nuevo chat
+                },
+                elevation = FloatingActionButtonDefaults.elevation(8.dp),
+                containerColor = Color(0xFF038238),
+                contentColor = Color.White,
+            )
         }
 
         //Bottom
@@ -231,7 +265,7 @@ fun MainScreen(modifier: Modifier) {
             modifier = Modifier
                 .height(200.dp)
                 .weight(1f)
-                .fillMaxWidth()
+                .fillMaxSize()
                 .background(Color(0xFF00C853)),
         ) {
             Column(
