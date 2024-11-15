@@ -25,6 +25,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -103,13 +105,26 @@ fun MainScreen(modifier: Modifier) {
                                 modifier = Modifier.size(28.dp),
                             )
                         }
-                    }
+                    },
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color(0xFF038238),
+                        unfocusedContainerColor = Color(0xFF038238),
+                        focusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        cursorColor = Color.White,
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White
+                    )
                 )
             }
         } else {
             // Cabecera
             Row(
-                modifier = Modifier.weight(1f).background(Color(0xFF00C853))
+                modifier = Modifier
+                    .weight(1f)
+                    .background(Color(0xFF00C853))
             ) {
                 //Título WhatsApp
                 Row(
@@ -277,7 +292,7 @@ fun MainScreen(modifier: Modifier) {
                     onClick = {
                         //TODO: Ir a Chats
                     },
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.size(34.dp)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.chats),
@@ -304,7 +319,7 @@ fun MainScreen(modifier: Modifier) {
                     onClick = {
                         //TODO: Ir a la novedades
                     },
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.size(34.dp)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.status),
@@ -331,12 +346,12 @@ fun MainScreen(modifier: Modifier) {
                     onClick = {
                         //TODO: Ir a la comunidades
                     },
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.size(34.dp)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.group),
                         contentDescription = null,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier
                     )
                 }
 
@@ -358,7 +373,7 @@ fun MainScreen(modifier: Modifier) {
                     onClick = {
                         //TODO: Ir a la llamadas
                     },
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.size(34.dp)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.calls),
