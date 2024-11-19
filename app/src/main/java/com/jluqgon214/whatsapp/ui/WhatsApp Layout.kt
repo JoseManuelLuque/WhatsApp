@@ -20,11 +20,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SportsSoccer
 import androidx.compose.material.icons.outlined.Chat
 import androidx.compose.material.icons.outlined.Groups
 import androidx.compose.material.icons.outlined.Phone
-import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.SportsSoccer
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.FloatingActionButton
@@ -33,14 +33,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
-import androidx.compose.material3.NavigationBarDefaults.containerColor
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -306,21 +303,25 @@ fun BottomNavegationBar() {
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf("Chats", "Novedades", "Comunidades", "Llamadas")
     val selectedIcons =
-        listOf(Icons.Filled.Chat, Icons.Filled.Search, Icons.Filled.Groups, Icons.Filled.Phone)
+        listOf(
+            Icons.Filled.Chat,
+            Icons.Filled.SportsSoccer,
+            Icons.Filled.Groups,
+            Icons.Filled.Phone
+        )
     val unselectedIcons = listOf(
         Icons.Outlined.Chat,
-        Icons.Outlined.Search,
+        Icons.Outlined.SportsSoccer,
         Icons.Outlined.Groups,
         Icons.Outlined.Phone
     )
 
     NavigationBar(
         modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFF00C853)),
-            containerColor = Color(0xFF00C853),
+            .fillMaxWidth(),
+        containerColor = Color(0xFF00C853),
 
-    ) {
+        ) {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 icon = {
@@ -330,15 +331,16 @@ fun BottomNavegationBar() {
                     )
                 },
                 label = {
-                    if (selectedItem == index)
-                    {
-                        Text(item, style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 12.sp))
-                    }
-                    else {
+                    if (selectedItem == index) {
+                        Text(
+                            item,
+                            style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        )
+                    } else {
                         Text(item, style = TextStyle(fontSize = 12.sp))
                     }
 
-                        },
+                },
                 selected = selectedItem == index,
                 onClick = { selectedItem = index },
                 colors = NavigationBarItemDefaults.colors(
