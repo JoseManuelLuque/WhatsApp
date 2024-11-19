@@ -16,6 +16,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Chat
+import androidx.compose.material.icons.outlined.Groups
+import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.FloatingActionButton
@@ -23,14 +32,22 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarDefaults.containerColor
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,11 +55,13 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jluqgon214.whatsapp.R
 import com.jluqgon214.whatsapp.model.Contacto
+import com.jluqgon214.whatsapp.ui.theme.Contraste
 
 @Composable
 fun MainScreen(modifier: Modifier) {
@@ -197,9 +216,11 @@ fun MainScreen(modifier: Modifier) {
         }
 
         //Chats
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .weight(10f)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(10f)
+        ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -276,120 +297,59 @@ fun MainScreen(modifier: Modifier) {
         }
 
         //Bottom
-        Row(
-            modifier = Modifier
-                .height(200.dp)
-                .weight(1f)
-                .fillMaxSize()
-                .background(Color(0xFF00C853)),
-        ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                IconButton(
-                    onClick = {
-                        //TODO: Ir a Chats
-                    },
-                    modifier = Modifier.size(34.dp)
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.chats),
-                        contentDescription = null,
-                        modifier = Modifier.size(28.dp)
+        BottomNavegationBar()
+    }
+}
+
+@Composable
+fun BottomNavegationBar() {
+    var selectedItem by remember { mutableIntStateOf(0) }
+    val items = listOf("Chats", "Novedades", "Comunidades", "Llamadas")
+    val selectedIcons =
+        listOf(Icons.Filled.Chat, Icons.Filled.Search, Icons.Filled.Groups, Icons.Filled.Phone)
+    val unselectedIcons = listOf(
+        Icons.Outlined.Chat,
+        Icons.Outlined.Search,
+        Icons.Outlined.Groups,
+        Icons.Outlined.Phone
+    )
+
+    NavigationBar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFF00C853)),
+            containerColor = Color(0xFF00C853),
+
+    ) {
+        items.forEachIndexed { index, item ->
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        if (selectedItem == index) selectedIcons[index] else unselectedIcons[index],
+                        contentDescription = item
                     )
-                }
+                },
+                label = {
+                    if (selectedItem == index)
+                    {
+                        Text(item, style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 12.sp))
+                    }
+                    else {
+                        Text(item, style = TextStyle(fontSize = 12.sp))
+                    }
 
-                Text(
-                    text = stringResource(R.string.contactos),
-                    modifier = Modifier,
-                    color = Color.White,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    fontSize = bottomTextsSize
+                        },
+                selected = selectedItem == index,
+                onClick = { selectedItem = index },
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = Contraste,
+                    selectedIconColor = Color.White,
+                    selectedTextColor = Color.White,
+                    unselectedTextColor = Color.White,
+                    unselectedIconColor = Color.White
                 )
-            }
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                IconButton(
-                    onClick = {
-                        //TODO: Ir a la novedades
-                    },
-                    modifier = Modifier.size(34.dp)
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.status),
-                        contentDescription = null,
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-
-                Text(
-                    text = stringResource(R.string.novedades),
-                    modifier = Modifier,
-                    color = Color.White,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    fontSize = bottomTextsSize
-                )
-            }
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                IconButton(
-                    onClick = {
-                        //TODO: Ir a la comunidades
-                    },
-                    modifier = Modifier.size(34.dp)
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.group),
-                        contentDescription = null,
-                        modifier = Modifier
-                    )
-                }
-
-                Text(
-                    text = stringResource(R.string.comunidades),
-                    modifier = Modifier,
-                    color = Color.White,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    fontSize = bottomTextsSize
-                )
-            }
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                IconButton(
-                    onClick = {
-                        //TODO: Ir a la llamadas
-                    },
-                    modifier = Modifier.size(34.dp)
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.calls),
-                        contentDescription = null,
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-
-                Text(
-                    text = stringResource(R.string.llamadas),
-                    modifier = Modifier,
-                    color = Color.White,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    fontSize = bottomTextsSize
-                )
-            }
+            )
         }
     }
 }
+
