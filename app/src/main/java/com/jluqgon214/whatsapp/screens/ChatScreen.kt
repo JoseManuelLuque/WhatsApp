@@ -1,6 +1,5 @@
 package com.jluqgon214.whatsapp.screens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AttachFile
@@ -34,17 +34,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.jluqgon214.whatsapp.components.Message
 import com.jluqgon214.whatsapp.components.TopBar
 import com.jluqgon214.whatsapp.data.WhatsAppViewModel
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
-    Scaffold(
-        topBar = {
-            TopBar(viewModel, navController)
-        }
-    ) {
+    Scaffold { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -52,6 +48,7 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            TopBar(viewModel, navController)
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -61,7 +58,9 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-
+                    items(viewModel.mensajes) { mensaje ->
+                        Message(mensaje)
+                    }
                 }
             }
 

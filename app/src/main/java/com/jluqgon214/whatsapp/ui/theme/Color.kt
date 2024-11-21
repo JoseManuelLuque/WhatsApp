@@ -12,3 +12,4 @@ val Pink40 = Color(0xFF7D5260)
 
 val Principal = Color(0xFF00C853)
 val Contraste = Color(0xFF038238)
+val MensajeRecivido = Color(0xFF524E4E)

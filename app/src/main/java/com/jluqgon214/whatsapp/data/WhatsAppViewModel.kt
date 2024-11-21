@@ -2,7 +2,6 @@ package com.jluqgon214.whatsapp.data
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import com.jluqgon214.whatsapp.R
 import com.jluqgon214.whatsapp.model.Contacto
 import com.jluqgon214.whatsapp.model.Mensaje
@@ -25,10 +24,22 @@ class WhatsAppViewModel {
         )
 
     val mensajes = mutableStateListOf<Mensaje>(
-        Mensaje("Hola", listaContactos[0]),
-        Mensaje("Adios", listaContactos[0]),
-        Mensaje("Hola", listaContactos[0]),
-        Mensaje("Adios", listaContactos[0])
+        Mensaje("Hola", null, true),
+        Mensaje("Adios", null, false),
+        Mensaje("Hola", null, false),
+        Mensaje("Adios", null, true),
+        Mensaje("Hola", null, true),
+        Mensaje("Adios", null, false),
+        Mensaje("Hola", null, false),
+        Mensaje("Adios", null, true),
+        Mensaje("Hola", null, true),
+        Mensaje("Adios", null, false),
+        Mensaje("Hola", null, false),
+        Mensaje("Adios", null, true),
+        Mensaje("Hola", null, true),
+        Mensaje("Adios", null, false),
+        Mensaje("Hola", null, false),
+        Mensaje("Adios", null, true)
     )
 
     var searching = mutableStateOf(false)
