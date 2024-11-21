@@ -43,12 +43,8 @@ fun Message(mensaje: Mensaje) {
                 .clip(RoundedCornerShape(8.dp)), // Aplicamos clip al Surface
             color = if (mensaje.enviado) Contraste else MensajeRecivido
         ) {
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-            ) {
-                Text(mensaje.contenido, color = Color.White)
-            }
+            Text(mensaje.contenido, color = Color.White, modifier = Modifier
+                .padding(16.dp))
         }
     }
 
