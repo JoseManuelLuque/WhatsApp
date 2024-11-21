@@ -2,6 +2,7 @@ package com.jluqgon214.whatsapp.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -15,9 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jluqgon214.whatsapp.data.WhatsAppViewModel
 import com.jluqgon214.whatsapp.model.Mensaje
-import com.jluqgon214.whatsapp.ui.theme.Contraste
-import com.jluqgon214.whatsapp.ui.theme.MensajeRecivido
+import com.jluqgon214.whatsapp.ui.theme.ColorMensajeEnviado
+import com.jluqgon214.whatsapp.ui.theme.ColorMensajerecivido
+import com.jluqgon214.whatsapp.ui.theme.ColorTexto
+import kotlin.collections.getOrPut
 
 
 @Composable
@@ -29,7 +33,7 @@ fun Message(mensaje: Mensaje) {
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement =
-        if (mensaje.enviado) {
+        if (mensaje.remitente.id == 0) {
             Arrangement.End
         } else {
             Arrangement.Start
@@ -39,11 +43,11 @@ fun Message(mensaje: Mensaje) {
             modifier = Modifier
                 .wrapContentSize()
                 .clip(RoundedCornerShape(8.dp)), // Aplicamos clip al Surface
-            color = if (mensaje.enviado) Contraste else MensajeRecivido
+            color = if (mensaje.remitente.id == 0) ColorMensajeEnviado else if(mensaje.remitente.id != 0) ColorMensajerecivido else ColorMensajerecivido
         ) {
             Text(
-                mensaje.contenido, color = Color.White, modifier = Modifier
-                    .padding(16.dp)
+                mensaje.contenido, color = ColorTexto, modifier = Modifier
+                    .padding(8.dp)
             )
         }
     }

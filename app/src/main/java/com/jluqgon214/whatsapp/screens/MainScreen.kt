@@ -1,6 +1,8 @@
 package com.jluqgon214.whatsapp.screens
 
+// Importación necesaria para usar iconTint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,11 +16,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,12 +39,20 @@ import com.jluqgon214.whatsapp.R
 import com.jluqgon214.whatsapp.components.BottomNavigationBar
 import com.jluqgon214.whatsapp.components.MainTopBar
 import com.jluqgon214.whatsapp.data.WhatsAppViewModel
+import com.jluqgon214.whatsapp.ui.theme.ColorIconos
+import com.jluqgon214.whatsapp.ui.theme.ColorIconos2
+import com.jluqgon214.whatsapp.ui.theme.ColorTexto
+import com.jluqgon214.whatsapp.ui.theme.ColorTextoSecundario
+import com.jluqgon214.whatsapp.ui.theme.Fondo
+import com.jluqgon214.whatsapp.ui.theme.VerdeLlamativo
 
 @Composable
 fun MainScreen(navController: NavController, viewModel: WhatsAppViewModel) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Fondo),
         ) {
             Spacer(Modifier.padding(innerPadding))
 
@@ -60,9 +74,9 @@ fun MainScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                         Button(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(120.dp),
+                                .height(85.dp),
                             onClick = {
-                                viewModel.contactoActual = contacto
+                                viewModel.actualizarContactoActual(contacto)
                                 navController.navigate("ChatScreen")
                                 val index = viewModel.listaContactos.indexOf(contacto)
                                 if (index > 0) {
@@ -76,10 +90,10 @@ fun MainScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                             },
                             contentPadding = PaddingValues(start = 0.dp),
                             colors = ButtonColors(
-                                containerColor = Color.White,
-                                contentColor = Color.Gray,
-                                disabledContainerColor = Color.LightGray,
-                                disabledContentColor = Color.LightGray
+                                containerColor = Color.Transparent,
+                                contentColor = Color.Transparent,
+                                disabledContainerColor = Color.Transparent,
+                                disabledContentColor = Color.Transparent
                             ),
                             shape = RectangleShape,
                             content = {
@@ -94,10 +108,30 @@ fun MainScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                                         painter = painterResource(id = contacto.fotoPerfil),
                                         contentDescription = null,
                                         modifier = Modifier
-                                            .size(100.dp)
+                                            .size(85.dp)
                                             .padding(end = 16.dp, start = 16.dp)
                                     )
-                                    Text(text = contacto.nombre, color = Color.Black)
+                                    Column {
+                                        Text(text = contacto.nombre, color = ColorTexto)
+
+                                        Row {
+                                            IconButton(
+                                                onClick = { /* Acción al hacer clic */ },
+                                                colors = IconButtonDefaults.filledIconButtonColors(
+                                                    containerColor = Color.Transparent, // Color del contenedor (transparente)
+                                                    contentColor = ColorIconos2 // Color del icono (rojo)
+                                                ), modifier = Modifier.size(24.dp).padding(end = 6.dp)
+                                            ) {
+                                            Icon(
+                                                contentDescription = null,
+                                                imageVector = Icons.Default.Check
+                                            ) }
+                                            Text(
+                                                text = "Texto de prueba",
+                                                color = ColorTextoSecundario
+                                            )
+                                        }
+                                    }
                                 }
                             }
 
@@ -121,8 +155,8 @@ fun MainScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                         //TODO: Añadir nuevo chat
                     },
                     elevation = FloatingActionButtonDefaults.elevation(8.dp),
-                    containerColor = Color(0xFF038238),
-                    contentColor = Color.White,
+                    containerColor = VerdeLlamativo,
+                    contentColor = ColorIconos,
                 )
             }
 

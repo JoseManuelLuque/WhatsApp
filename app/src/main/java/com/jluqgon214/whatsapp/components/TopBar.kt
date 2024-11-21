@@ -26,15 +26,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jluqgon214.whatsapp.data.WhatsAppViewModel
-import com.jluqgon214.whatsapp.ui.theme.Principal
+import com.jluqgon214.whatsapp.ui.theme.ColorTexto
+import com.jluqgon214.whatsapp.ui.theme.Fondo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(viewModel: WhatsAppViewModel, navController: NavController) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Principal,
-            titleContentColor = Color.White
+            containerColor = Fondo,
+            titleContentColor = ColorTexto
         ),
         title = {
             Row(
@@ -42,13 +43,13 @@ fun TopBar(viewModel: WhatsAppViewModel, navController: NavController) {
                 horizontalArrangement = Arrangement.Start
             ) {
                 Image(
-                    painter = painterResource(id = viewModel.contactoActual!!.fotoPerfil),
+                    painter = painterResource(id = viewModel.contactoActual.value!!.fotoPerfil),
                     contentDescription = null,
                     modifier = Modifier
                         .padding(end = 16.dp)
                 )
                 Text(
-                    viewModel.contactoActual!!.nombre,
+                    viewModel.contactoActual.value!!.nombre,
                     style = TextStyle(fontWeight = FontWeight.Bold)
                 )
             }

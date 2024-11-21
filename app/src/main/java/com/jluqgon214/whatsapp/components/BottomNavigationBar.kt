@@ -21,11 +21,15 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.jluqgon214.whatsapp.ui.theme.Contraste
+import com.jluqgon214.whatsapp.ui.theme.ColorIconos
+import com.jluqgon214.whatsapp.ui.theme.ColorIconos2
+import com.jluqgon214.whatsapp.ui.theme.ColorTextoSecundario
+import com.jluqgon214.whatsapp.ui.theme.ColorTextoSeleccionado
+import com.jluqgon214.whatsapp.ui.theme.Fondo
+import com.jluqgon214.whatsapp.ui.theme.VerdeOscuro
 
 @Composable
 fun BottomNavigationBar() {
@@ -48,7 +52,7 @@ fun BottomNavigationBar() {
     NavigationBar(
         modifier = Modifier
             .fillMaxWidth(),
-        containerColor = Color(0xFF00C853),
+        containerColor = Fondo,
 
         ) {
         items.forEachIndexed { index, item ->
@@ -56,7 +60,7 @@ fun BottomNavigationBar() {
                 icon = {
                     Icon(
                         if (selectedItem == index) selectedIcons[index] else unselectedIcons[index],
-                        contentDescription = item
+                        contentDescription = item,
                     )
                 },
                 label = {
@@ -73,11 +77,11 @@ fun BottomNavigationBar() {
                 selected = selectedItem == index,
                 onClick = { selectedItem = index },
                 colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Contraste,
-                    selectedIconColor = Color.White,
-                    selectedTextColor = Color.White,
-                    unselectedTextColor = Color.White,
-                    unselectedIconColor = Color.White
+                    indicatorColor = VerdeOscuro,
+                    selectedIconColor = ColorIconos,
+                    selectedTextColor = ColorTextoSeleccionado,
+                    unselectedTextColor = ColorTextoSecundario,
+                    unselectedIconColor = ColorIconos2
                 )
             )
         }

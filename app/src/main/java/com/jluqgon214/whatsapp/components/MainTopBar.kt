@@ -33,6 +33,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.jluqgon214.whatsapp.R
 import com.jluqgon214.whatsapp.data.WhatsAppViewModel
+import com.jluqgon214.whatsapp.ui.theme.ColorIconos
+import com.jluqgon214.whatsapp.ui.theme.ColorIconos2
+import com.jluqgon214.whatsapp.ui.theme.ColorTexto
+import com.jluqgon214.whatsapp.ui.theme.ColorTextoSecundario
+import com.jluqgon214.whatsapp.ui.theme.Cursor
+import com.jluqgon214.whatsapp.ui.theme.Fondo
+import com.jluqgon214.whatsapp.ui.theme.FondoInput
+import com.jluqgon214.whatsapp.ui.theme.VerdeOscuro
 
 @Composable
 fun MainTopBar(navController: NavController, viewModel: WhatsAppViewModel) {
@@ -41,7 +49,7 @@ fun MainTopBar(navController: NavController, viewModel: WhatsAppViewModel) {
             modifier = Modifier
                 .height(72.dp)
                 .fillMaxWidth()
-                .background(Color(0xFF00C853)),
+                .background(Fondo),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -74,10 +82,10 @@ fun MainTopBar(navController: NavController, viewModel: WhatsAppViewModel) {
                             onClick = { viewModel.searchText.value = "" },
                             modifier = Modifier.size(28.dp),
                             colors = IconButtonColors(
-                                contentColor = Color.White,
+                                contentColor = ColorIconos,
                                 containerColor = Color.Transparent,
                                 disabledContainerColor = Color.Transparent,
-                                disabledContentColor = Color.White
+                                disabledContentColor = ColorIconos2
                             )
                         ) {
                             Icon(
@@ -88,15 +96,15 @@ fun MainTopBar(navController: NavController, viewModel: WhatsAppViewModel) {
                     }
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFF038238),
-                    unfocusedContainerColor = Color(0xFF038238),
-                    focusedLabelColor = Color.White,
-                    unfocusedLabelColor = Color.White,
+                    focusedContainerColor = FondoInput,
+                    unfocusedContainerColor = FondoInput,
+                    focusedPlaceholderColor = ColorTextoSecundario,
+                    unfocusedPlaceholderColor = ColorTextoSecundario,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = Color.White,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White
+                    cursorColor = Cursor,
+                    focusedTextColor = ColorTexto,
+                    unfocusedTextColor = ColorTextoSecundario
                 )
             )
         }
@@ -106,7 +114,7 @@ fun MainTopBar(navController: NavController, viewModel: WhatsAppViewModel) {
             modifier = Modifier
                 .height(72.dp)
                 .fillMaxWidth()
-                .background(Color(0xFF00C853))
+                .background(Fondo)
         ) {
             //Título WhatsApp
             Row(
@@ -119,7 +127,7 @@ fun MainTopBar(navController: NavController, viewModel: WhatsAppViewModel) {
                 Text(
                     text = stringResource(R.string.whatsapp),
                     modifier = Modifier.padding(start = 16.dp),
-                    color = Color.White,
+                    color = ColorTexto,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )

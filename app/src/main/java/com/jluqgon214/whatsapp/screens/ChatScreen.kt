@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AttachFile
@@ -23,12 +23,14 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,18 +40,46 @@ import androidx.navigation.NavController
 import com.jluqgon214.whatsapp.components.Message
 import com.jluqgon214.whatsapp.components.TopBar
 import com.jluqgon214.whatsapp.data.WhatsAppViewModel
+import com.jluqgon214.whatsapp.model.Mensaje
+import com.jluqgon214.whatsapp.ui.theme.ColorIconos
+import com.jluqgon214.whatsapp.ui.theme.ColorIconos2
+import com.jluqgon214.whatsapp.ui.theme.ColorTexto
+import com.jluqgon214.whatsapp.ui.theme.ColorTextoSecundario
+import com.jluqgon214.whatsapp.ui.theme.Cursor
+import com.jluqgon214.whatsapp.ui.theme.Fondo
+import com.jluqgon214.whatsapp.ui.theme.FondoInput
+import com.jluqgon214.whatsapp.ui.theme.VerdeLlamativo
 
 @Composable
 fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
-    Scaffold { padding ->
+    Scaffold(
+        topBar = { TopBar(viewModel, navController) }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White),
+                .background(Fondo),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            TopBar(viewModel, navController)
+
+
+            val listState = rememberLazyListState()
+
+            /*val mensajesDeConversacion = viewModel.mensajesPorContacto[viewModel.usuario.id]
+                ?.filter { it.remitente.id == viewModel.contactoActual?.id || it.destinatario == viewModel.contactoActual?.id }
+                ?: emptyList()*/
+
+            /*val mensajesDeConversacion = viewModel.mensajesPorContacto.getOrElse(viewModel.usuario.id) { emptyList() }
+                .filter { it.remitente.id == viewModel.contactoActual?.id || it.destinatario == viewModel.contactoActual?.id }
+*/
+            val mensajesDeConversacion = if (viewModel.contactoActual != null) {
+                viewModel.mensajesPorContacto.getOrElse(viewModel.usuario.id) { emptyList() }
+                    .filter { it.remitente.id == viewModel.contactoActual.value?.id || it.destinatario == viewModel.contactoActual.value?.id }
+            } else {
+                emptyList()
+            }
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -57,12 +87,19 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
             ) {
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    state = listState
                 ) {
-                    items(viewModel.mensajes) { mensaje ->
-                        Message(mensaje)
+                    items(mensajesDeConversacion.size) { index ->
+                        Message(mensajesDeConversacion[index])
                     }
                 }
+
+                /*LaunchedEffect(viewModel.mensajesPorContacto.size) {
+                    if (viewModel.listaContactos[viewModel.contactoActual!!.id]) {
+                        listState.animateScrollToItem(viewModel.mensajesPorContacto.size - 1)
+                    }
+                }*/
             }
 
             Row(
@@ -87,7 +124,13 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                             onClick = {
                                 //TODO EMOJIS
                             },
-                            modifier = Modifier.size(28.dp)
+                            modifier = Modifier.size(28.dp),
+                            colors = IconButtonColors(
+                                contentColor = ColorIconos2,
+                                containerColor = Color.Transparent,
+                                disabledContainerColor = Color.Transparent,
+                                disabledContentColor = ColorIconos2
+                            )
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.EmojiEmotions,
@@ -103,7 +146,13 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                                 onClick = {
                                     //TODO EMOJIS
                                 },
-                                modifier = Modifier.size(28.dp)
+                                modifier = Modifier.size(28.dp),
+                                colors = IconButtonColors(
+                                    contentColor = ColorIconos2,
+                                    containerColor = Color.Transparent,
+                                    disabledContainerColor = Color.Transparent,
+                                    disabledContentColor = ColorIconos2
+                                )
                             ) {
                                 Icon(
                                     imageVector = Icons.Outlined.AttachFile,
@@ -111,12 +160,18 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                                 )
                             }
 
-                            if (viewModel.messageText.value.isEmpty()){
+                            if (viewModel.messageText.value.isEmpty()) {
                                 IconButton(
                                     onClick = {
                                         //TODO EMOJIS
                                     },
-                                    modifier = Modifier.size(28.dp)
+                                    modifier = Modifier.size(28.dp),
+                                    colors = IconButtonColors(
+                                        contentColor = ColorIconos2,
+                                        containerColor = Color.Transparent,
+                                        disabledContainerColor = Color.Transparent,
+                                        disabledContentColor = ColorIconos2
+                                    )
                                 ) {
                                     Icon(
                                         imageVector = Icons.Outlined.CameraAlt,
@@ -129,24 +184,24 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                     },
                     placeholder = { Text("Mensaje") },
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color(0xFF038238),
-                        unfocusedContainerColor = Color(0xFF038238),
-                        focusedLabelColor = Color.White,
-                        unfocusedLabelColor = Color.White,
+                        focusedContainerColor = FondoInput,
+                        unfocusedContainerColor = FondoInput,
+                        focusedPlaceholderColor = ColorTextoSecundario,
+                        unfocusedPlaceholderColor = ColorTextoSecundario,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        cursorColor = Color.White,
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
+                        cursorColor = Cursor,
+                        focusedTextColor = ColorTexto,
+                        unfocusedTextColor = ColorTexto
                     )
                 )
 
                 FloatingActionButton(
                     content = {
-                        if (viewModel.messageText.value.isNotEmpty()){
+                        if (viewModel.messageText.value.isNotEmpty()) {
                             Icon(
                                 imageVector = Icons.Outlined.Send,
-                                contentDescription = "Audio"
+                                contentDescription = "Send Message"
                             )
                         } else {
                             Icon(
@@ -159,11 +214,23 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                     modifier = Modifier
                         .weight(1f),
                     onClick = {
-                        //TODO RECORD AUDIO
+                        if (viewModel.messageText.value.isNotEmpty()) {
+                            viewModel.agregarMensaje(
+                                Mensaje(
+                                    viewModel.messageText.value,
+                                    viewModel.usuario,
+                                    viewModel.contactoActual.value!!.id
+                                )
+                            )
+                            viewModel.messageText.value = ""
+
+                        } else {
+                            //TODO RECORD AUDIO
+                        }
                     },
                     elevation = FloatingActionButtonDefaults.elevation(8.dp),
-                    containerColor = Color(0xFF038238),
-                    contentColor = Color.White,
+                    containerColor = VerdeLlamativo,
+                    contentColor = ColorIconos,
                     shape = MaterialTheme.shapes.small.copy(CornerSize(50.dp))
                 )
             }
