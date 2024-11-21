@@ -50,6 +50,10 @@ import com.jluqgon214.whatsapp.ui.theme.VerdeLlamativo
 
 @Composable
 fun MainScreen(navController: NavController, viewModel: WhatsAppViewModel) {
+    if (viewModel.mensajesPorContacto.isEmpty()){
+
+        viewModel.inicializarMensajes()
+    }
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
             modifier = Modifier
@@ -79,9 +83,7 @@ fun MainScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                                 .height(85.dp),
                             onClick = {
                                 viewModel.actualizarContactoActual(contacto)
-                                Handler(Looper.getMainLooper()).postDelayed({
-                                    navController.navigate("ChatScreen")
-                                }, 1000)
+                                navController.navigate("ChatScreen")
                                 val index = viewModel.listaContactos.indexOf(contacto)
                                 if (index > 0) {
                                     val contactoSeleccionado =

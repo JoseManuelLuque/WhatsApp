@@ -33,7 +33,7 @@ class WhatsAppViewModel {
 
     var messageText = mutableStateOf("")
 
-    var contactoActual = mutableStateOf<Contacto?>(listaContactos[1])
+    var contactoActual = mutableStateOf<Contacto?>(null)
 
     fun agregarMensaje(mensaje: Mensaje) {
         // Agregar a la lista del destinatario
@@ -51,18 +51,18 @@ class WhatsAppViewModel {
         contactoActual.value = contacto
     }
 
-    init {
+    fun inicializarMensajes() {
         listaContactos.forEach { contacto ->
             mensajesPorContacto[contacto.id] = mutableListOf()
             // Agregar algunos mensajes de ejemplo
+            println(contacto.toString())
             agregarMensaje(Mensaje("Hola", usuario, contacto.id))
             agregarMensaje(Mensaje("¿Cómo estás?", contacto, usuario.id))
             agregarMensaje(Mensaje("Hola", usuario, contacto.id))
             agregarMensaje(Mensaje("¿Cómo estás?", contacto, usuario.id))
             agregarMensaje(Mensaje("Hola", usuario, contacto.id))
-            agregarMensaje(Mensaje("¿Cómo estás?", contacto, usuario.id))
+            agregarMensaje(Mensaje("¿Cómo estás ${usuario.nombre}?", contacto, usuario.id))
         }
-
     }
 }
 
