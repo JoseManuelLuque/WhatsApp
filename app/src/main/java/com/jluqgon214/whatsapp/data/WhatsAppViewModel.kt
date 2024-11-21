@@ -33,20 +33,16 @@ class WhatsAppViewModel {
 
     var messageText = mutableStateOf("")
 
-    var contactoActual = mutableStateOf<Contacto?>(null)
+    var contactoActual = mutableStateOf<Contacto?>(listaContactos[1])
 
     fun agregarMensaje(mensaje: Mensaje) {
         // Agregar a la lista del destinatario
         mensajesPorContacto.getOrPut(mensaje.destinatario) { mutableListOf() }.add(mensaje)
 
         // Si el destinatario es el usuario actual, agregar también a su lista
-        /*if (mensaje.destinatario == usuario.id) {
+        if (mensaje.destinatario == usuario.id) {
             mensajesPorContacto.getOrPut(usuario.id) { mutableListOf() }.add(mensaje)
         } else { // Si el destinatario no es el usuario actual, agregar a la lista del remitente
-            mensajesPorContacto.getOrPut(mensaje.remitente.id) { mutableListOf() }.add(mensaje)
-        }*/
-
-        if (mensaje.remitente == usuario) {
             mensajesPorContacto.getOrPut(mensaje.remitente.id) { mutableListOf() }.add(mensaje)
         }
     }
@@ -56,25 +52,17 @@ class WhatsAppViewModel {
     }
 
     init {
-        // Inicializar la lista de mensajes del usuario actual con una lista vacía
-        mensajesPorContacto[usuario.id] = mutableListOf()
-
-        for (contacto in listaContactos) {
-            mensajesPorContacto[contacto.id] = mutableListOf() // Inicializar con lista vacía
+        listaContactos.forEach { contacto ->
+            mensajesPorContacto[contacto.id] = mutableListOf()
+            // Agregar algunos mensajes de ejemplo
+            agregarMensaje(Mensaje("Hola", usuario, contacto.id))
+            agregarMensaje(Mensaje("¿Cómo estás?", contacto, usuario.id))
+            agregarMensaje(Mensaje("Hola", usuario, contacto.id))
+            agregarMensaje(Mensaje("¿Cómo estás?", contacto, usuario.id))
+            agregarMensaje(Mensaje("Hola", usuario, contacto.id))
+            agregarMensaje(Mensaje("¿Cómo estás?", contacto, usuario.id))
         }
 
-        agregarMensaje(Mensaje("hola", listaContactos[0], 0))
-        agregarMensaje(Mensaje("hola", listaContactos[0], 0))
-        agregarMensaje(Mensaje("hola", listaContactos[0], 0))
-        agregarMensaje(Mensaje("hola", usuario, 1))
-        agregarMensaje(Mensaje("hola", usuario, 1))
-        agregarMensaje(Mensaje("hola", usuario, 1))
-        agregarMensaje(Mensaje("hola", listaContactos[0], 0))
-        agregarMensaje(Mensaje("hola", listaContactos[1], 0))
-        agregarMensaje(Mensaje("hola", listaContactos[2], 0))
-        agregarMensaje(Mensaje("hola", usuario, 1))
-        agregarMensaje(Mensaje("hola", usuario, 2))
-        agregarMensaje(Mensaje("hola", usuario, 3))
     }
 }
 

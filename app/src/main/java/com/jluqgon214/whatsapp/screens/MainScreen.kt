@@ -1,6 +1,8 @@
 package com.jluqgon214.whatsapp.screens
 
 // Importación necesaria para usar iconTint
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -77,7 +79,9 @@ fun MainScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                                 .height(85.dp),
                             onClick = {
                                 viewModel.actualizarContactoActual(contacto)
-                                navController.navigate("ChatScreen")
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    navController.navigate("ChatScreen")
+                                }, 1000)
                                 val index = viewModel.listaContactos.indexOf(contacto)
                                 if (index > 0) {
                                     val contactoSeleccionado =

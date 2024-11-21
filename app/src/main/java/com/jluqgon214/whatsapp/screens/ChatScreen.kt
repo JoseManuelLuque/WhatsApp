@@ -31,6 +31,9 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -66,14 +69,7 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
 
             val listState = rememberLazyListState()
 
-            /*val mensajesDeConversacion = viewModel.mensajesPorContacto[viewModel.usuario.id]
-                ?.filter { it.remitente.id == viewModel.contactoActual?.id || it.destinatario == viewModel.contactoActual?.id }
-                ?: emptyList()*/
-
-            /*val mensajesDeConversacion = viewModel.mensajesPorContacto.getOrElse(viewModel.usuario.id) { emptyList() }
-                .filter { it.remitente.id == viewModel.contactoActual?.id || it.destinatario == viewModel.contactoActual?.id }
-*/
-            val mensajesDeConversacion = if (viewModel.contactoActual != null) {
+            var mensajesDeConversacion = if (viewModel.contactoActual.value != null) {
                 viewModel.mensajesPorContacto.getOrElse(viewModel.usuario.id) { emptyList() }
                     .filter { it.remitente.id == viewModel.contactoActual.value?.id || it.destinatario == viewModel.contactoActual.value?.id }
             } else {
@@ -84,6 +80,7 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(10f)
+                    .padding(top = 100.dp)
             ) {
                 LazyColumn(
                     modifier = Modifier
