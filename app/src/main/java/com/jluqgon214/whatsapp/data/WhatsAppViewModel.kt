@@ -35,6 +35,8 @@ class WhatsAppViewModel {
 
     var contactoActual = mutableStateOf<Contacto?>(null)
 
+    var ultimoMensajeEnviado: Mensaje? = null
+
     fun agregarMensaje(mensaje: Mensaje) {
         // Agregar a la lista del destinatario
         mensajesPorContacto.getOrPut(mensaje.destinatario) { mutableListOf() }.add(mensaje)
@@ -45,6 +47,8 @@ class WhatsAppViewModel {
         } else { // Si el destinatario no es el usuario actual, agregar a la lista del remitente
             mensajesPorContacto.getOrPut(mensaje.remitente.id) { mutableListOf() }.add(mensaje)
         }
+
+        ultimoMensajeEnviado = mensaje
     }
 
     fun actualizarContactoActual(contacto: Contacto) {

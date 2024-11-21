@@ -1,5 +1,6 @@
 package com.jluqgon214.whatsapp.screens
 
+import androidx.activity.result.launch
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,8 +9,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CornerSize
@@ -31,15 +34,15 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.jluqgon214.whatsapp.components.InputBottomBar
 import com.jluqgon214.whatsapp.components.Message
 import com.jluqgon214.whatsapp.components.TopBar
 import com.jluqgon214.whatsapp.data.WhatsAppViewModel
@@ -52,23 +55,24 @@ import com.jluqgon214.whatsapp.ui.theme.Cursor
 import com.jluqgon214.whatsapp.ui.theme.Fondo
 import com.jluqgon214.whatsapp.ui.theme.FondoInput
 import com.jluqgon214.whatsapp.ui.theme.VerdeLlamativo
+import kotlinx.coroutines.launch
 
 @Composable
 fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
     Scaffold(
-        topBar = { TopBar(viewModel, navController) }
+        topBar = { TopBar(viewModel, navController) },
+        //bottomBar = {InputBottomBar(viewModel, navController)},
+        modifier = Modifier.fillMaxSize().imePadding()
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Fondo),
+                //.padding(bottom = 74.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
-
             val listState = rememberLazyListState()
-
             var mensajesDeConversacion = if (viewModel.contactoActual.value != null) {
                 viewModel.mensajesPorContacto.getOrElse(viewModel.usuario.id) { emptyList() }
                     .filter { it.remitente.id == viewModel.contactoActual.value?.id || it.destinatario == viewModel.contactoActual.value?.id }
@@ -82,6 +86,10 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                     .weight(10f)
                     .padding(top = 100.dp)
             ) {
+
+                val listState = rememberLazyListState()
+                val coroutineScope = rememberCoroutineScope()
+
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -91,17 +99,19 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                         Message(mensajesDeConversacion[index])
                     }
                 }
-
-                /*LaunchedEffect(viewModel.mensajesPorContacto.size) {
-                    if (viewModel.listaContactos[viewModel.contactoActual!!.id]) {
-                        listState.animateScrollToItem(viewModel.mensajesPorContacto.size - 1)
+                LaunchedEffect(viewModel.ultimoMensajeEnviado) {
+                    if (viewModel.ultimoMensajeEnviado != null &&
+                        viewModel.ultimoMensajeEnviado!!.destinatario == viewModel.contactoActual.value?.id) {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(mensajesDeConversacion.size - 1)
+                        }
                     }
-                }*/
+                }
             }
 
             Row(
                 modifier = Modifier
-                    .height(72.dp)
+                    .wrapContentHeight()
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -220,7 +230,6 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                                 )
                             )
                             viewModel.messageText.value = ""
-
                         } else {
                             //TODO RECORD AUDIO
                         }

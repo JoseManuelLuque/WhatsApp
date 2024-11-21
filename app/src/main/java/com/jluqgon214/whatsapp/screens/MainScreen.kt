@@ -1,8 +1,6 @@
 package com.jluqgon214.whatsapp.screens
 
 // Importación necesaria para usar iconTint
-import android.os.Handler
-import android.os.Looper
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -50,8 +48,7 @@ import com.jluqgon214.whatsapp.ui.theme.VerdeLlamativo
 
 @Composable
 fun MainScreen(navController: NavController, viewModel: WhatsAppViewModel) {
-    if (viewModel.mensajesPorContacto.isEmpty()){
-
+    if (viewModel.mensajesPorContacto.isEmpty()) {
         viewModel.inicializarMensajes()
     }
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -126,14 +123,23 @@ fun MainScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                                                 colors = IconButtonDefaults.filledIconButtonColors(
                                                     containerColor = Color.Transparent, // Color del contenedor (transparente)
                                                     contentColor = ColorIconos2 // Color del icono (rojo)
-                                                ), modifier = Modifier.size(24.dp).padding(end = 6.dp)
+                                                ),
+                                                modifier = Modifier
+                                                    .size(24.dp)
+                                                    .padding(end = 6.dp)
                                             ) {
-                                            Icon(
-                                                contentDescription = null,
-                                                imageVector = Icons.Default.Check
-                                            ) }
+                                                Icon(
+                                                    contentDescription = null,
+                                                    imageVector = Icons.Default.Check
+                                                )
+                                            }
+
+                                            val ultimoMensaje =
+                                                viewModel.mensajesPorContacto[contacto.id]?.lastOrNull()?.contenido ?: ""
                                             Text(
-                                                text = "Texto de prueba",
+                                                text = "${
+                                                    ultimoMensaje
+                                                }",
                                                 color = ColorTextoSecundario
                                             )
                                         }
