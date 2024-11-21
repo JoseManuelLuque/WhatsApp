@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.jluqgon214.whatsapp.ui.BottomNavegationBar
-import com.jluqgon214.whatsapp.ui.MainScreen
+import com.example.navigation.Navigation.AppNavigation
+import com.jluqgon214.whatsapp.screens.MainScreen
 import com.jluqgon214.whatsapp.ui.theme.WhatsAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,9 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WhatsAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainScreen(modifier = Modifier.padding(innerPadding))
-                }
+                AppNavigation()
             }
         }
     }
