@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.AttachFile
 import androidx.compose.material.icons.outlined.CameraAlt
 import androidx.compose.material.icons.outlined.EmojiEmotions
 import androidx.compose.material.icons.outlined.Mic
+import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -67,8 +68,7 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
             Row(
                 modifier = Modifier
                     .height(72.dp)
-                    .fillMaxWidth()
-                    .background(Color(0xFF00C853)),
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -79,8 +79,8 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                     modifier = Modifier
                         .weight(5f)
                         .padding(horizontal = 16.dp, vertical = 8.dp),
-                    value = viewModel.searchText.value,
-                    onValueChange = { viewModel.searchText.value = it },
+                    value = viewModel.messageText.value,
+                    onValueChange = { viewModel.messageText.value = it },
                     shape = shape,
                     leadingIcon = {
                         IconButton(
@@ -110,17 +110,21 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
                                     contentDescription = "EMOJIES"
                                 )
                             }
-                            IconButton(
-                                onClick = {
-                                    //TODO EMOJIS
-                                },
-                                modifier = Modifier.size(28.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.CameraAlt,
-                                    contentDescription = "Camera"
-                                )
+
+                            if (viewModel.messageText.value.isEmpty()){
+                                IconButton(
+                                    onClick = {
+                                        //TODO EMOJIS
+                                    },
+                                    modifier = Modifier.size(28.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.CameraAlt,
+                                        contentDescription = "Camera"
+                                    )
+                                }
                             }
+
                         }
                     },
                     placeholder = { Text("Mensaje") },
@@ -139,10 +143,18 @@ fun ChatScreen(navController: NavController, viewModel: WhatsAppViewModel) {
 
                 FloatingActionButton(
                     content = {
-                        Icon(
-                            imageVector = Icons.Outlined.Mic,
-                            contentDescription = "Audio"
-                        )
+                        if (viewModel.messageText.value.isNotEmpty()){
+                            Icon(
+                                imageVector = Icons.Outlined.Send,
+                                contentDescription = "Audio"
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.Mic,
+                                contentDescription = "Audio"
+                            )
+                        }
+
                     },
                     modifier = Modifier
                         .weight(1f),

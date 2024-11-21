@@ -1,8 +1,6 @@
 package com.jluqgon214.whatsapp.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,9 +29,9 @@ fun Message(mensaje: Mensaje) {
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement =
-        if (mensaje.enviado == true) {
+        if (mensaje.enviado) {
             Arrangement.End
-        } else{
+        } else {
             Arrangement.Start
         }
     ) {
@@ -43,8 +41,10 @@ fun Message(mensaje: Mensaje) {
                 .clip(RoundedCornerShape(8.dp)), // Aplicamos clip al Surface
             color = if (mensaje.enviado) Contraste else MensajeRecivido
         ) {
-            Text(mensaje.contenido, color = Color.White, modifier = Modifier
-                .padding(16.dp))
+            Text(
+                mensaje.contenido, color = Color.White, modifier = Modifier
+                    .padding(16.dp)
+            )
         }
     }
 

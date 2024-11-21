@@ -14,11 +14,11 @@ fun AppNavigation() {
     
     val viewModel = WhatsAppViewModel()
     
-    NavHost(navController = navController, startDestination = AppScreen.MainScreen.route) {
-        composable(AppScreen.MainScreen.route) {
+    NavHost(navController = navController, startDestination = "MainScreen") {
+        composable("MainScreen") {
             MainScreen(navController, viewModel)
         }
-        composable(AppScreen.ChatScreen.route) {
+        composable("ChatScreen") {
             ChatScreen(navController, viewModel)
         }
     }

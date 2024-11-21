@@ -46,5 +46,7 @@ class WhatsAppViewModel {
 
     var searchText = mutableStateOf("")
 
+    var messageText = mutableStateOf("")
+
     var contactoActual:Contacto? = null
 }
